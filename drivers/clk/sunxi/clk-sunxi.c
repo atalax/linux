@@ -604,6 +604,13 @@ static void sun7i_a20_get_out_factors(u32 *freq, u32 parent_rate,
 	*p = calcp;
 }
 
+static void sun8i_h3_get_ths_factors(u32 *freq, u32 parent_rate,
+				      u8 *n, u8 *k, u8 *m, u8 *p)
+{
+	/* Ignore the dividers as they are not continuous */
+	*freq = parent_rate;
+}
+
 /**
  * sunxi_factors_clk_setup() - Setup function for factor clocks
  */
@@ -667,6 +674,8 @@ static struct clk_factors_config sun4i_apb1_config = {
 	.pshift = 16,
 	.pwidth = 2,
 };
+
+static struct clk_factors_config sun8i_h3_ths_config = {};
 
 /* user manual says "n" but it's really "p" */
 static struct clk_factors_config sun7i_a20_out_config = {
@@ -732,6 +741,12 @@ static const struct factors_data sun7i_a20_out_data __initconst = {
 	.muxmask = BIT(1) | BIT(0),
 	.table = &sun7i_a20_out_config,
 	.getter = sun7i_a20_get_out_factors,
+};
+
+static const struct factors_data sun8i_h3_ths_data __initconst = {
+	.enable = 31,
+	.table = &sun8i_h3_ths_config,
+	.getter = sun8i_h3_get_ths_factors,
 };
 
 static struct clk * __init sunxi_factors_clk_setup(struct device_node *node,
@@ -1127,6 +1142,7 @@ static const struct of_device_id clk_factors_match[] __initconst = {
 	{.compatible = "allwinner,sun5i-a13-ahb-clk", .data = &sun5i_a13_ahb_data,},
 	{.compatible = "allwinner,sun4i-a10-apb1-clk", .data = &sun4i_apb1_data,},
 	{.compatible = "allwinner,sun7i-a20-out-clk", .data = &sun7i_a20_out_data,},
+	{.compatible = "allwinner,sun8i-h3-ths-clk", .data = &sun8i_h3_ths_data,},
 	{}
 };
 

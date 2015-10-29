@@ -365,6 +365,13 @@ config INTEL_PCH_THERMAL
 	  Thermal reporting device will provide temperature reading,
 	  programmable trip points and other information.
 
+config SUNXI_THS
+	tristate "Sunxi THS driver"
+	depends on ARCH_SUNXI
+	depends on OF
+	help
+	  Enable this to support thermal reporting on some newer Allwinner SoC.
+
 menu "Texas Instruments thermal drivers"
 depends on ARCH_HAS_BANDGAP || COMPILE_TEST
 source "drivers/thermal/ti-soc-thermal/Kconfig"
