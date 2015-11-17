@@ -101,7 +101,8 @@ static void pixcir_ts_parse(struct pixcir_i2c_ts_data *tsdata,
 	for (i = 0; i < touch; i++) {
 		report->touches[i].x = (bufptr[1] << 8) | bufptr[0];
 		report->touches[i].y = (bufptr[3] << 8) | bufptr[2];
-		touchscreen_apply_prop_to_x_y(&report->touches[i].x,
+		touchscreen_apply_prop_to_x_y(&tsdata->prop,
+					      &report->touches[i].x,
 					      &report->touches[i].y);
 
 		if (chip->has_hw_ids) {
